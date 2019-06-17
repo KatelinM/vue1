@@ -1,0 +1,91 @@
+<html>
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <title>Выборы</title>
+</head>
+<body>
+    <div class="container">
+        <input type="checkbox" id="checkbox" v-model="checked" >
+        <label for="checkbox">{{ checked }}</label>
+        <h3>
+            <template v-if='checked'>my</template>
+            <template v-else>yours</template>
+        </h3>
+        <div id="example-3" class="demo">
+          <input type="checkbox" id="jack" value="Джек" v-model="checkedNames">
+          <label for="jack">Джек</label>
+          <input type="checkbox" id="john" value="Джон" v-model="checkedNames">
+          <label for="john">Джон</label>
+          <input type="checkbox" id="mike" value="Майк" v-model="checkedNames">
+          <label for="mike">Майк</label>
+          <br>
+          <span>Отмеченные имена: {{ checkedNames.join(' - ') }}</span>
+        </div>
+        <input v-model.trim ='message' type="text" name="" value=""><br>
+        {{ message | capitalize }}
+        <h1>Люди Vue</h1>
+        <ul class="list-group">
+            <li v-for="(candidate, index) in candidates" :key="index" class="list-group-item">
+                {{candidate.name}} {{candidate.votes}}
+                <!-- увеличение голосов 'on:click'-->
+                <button type="button" class="btn btn-default" @click="candidate.votes++">Голосовать</button>
+            </li>
+        </ul>
+        <!-- обработка события клавиатуры -->
+        <input @keyup.delete="clear" class="form-control" placeholder="press 'delete' to reset">
+        <!-- отобразить имя 'mayor' с использованием вычисленного свойства -->
+        <h2>Наш мэр — {{mayor.name}}!</h2>
+        <pre>{{ $data }}</pre>
+        <pre>{{ mayor }}</pre>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+    el: '.container',
+    data: {
+        checkedNames: [],
+        message: '',
+        checked:'true',
+        candidates: [
+            {name: 'Мистер Черный', votes: 140},
+            {name: 'Мистер Белый', votes: 135},
+            {name: 'Мистер Розовый', votes: 145},
+            {name: 'Мистер Коричневый', votes: 130},
+        ]
+    },
+    computed: {
+        mayor: function () {
+            // сначала мы сортируем массив по убыванию
+            var candidatesSorted = this.candidates.sort(function (a, b) {
+                return b.votes - a.votes;
+            });
+            // мэр будет первым пунктом
+            return candidatesSorted[0];
+        }
+    },
+    filters: {
+        capitalize: function (value) {
+            if (!value) return ''
+            return value[0].toUpperCase() + value.slice(1)
+        }
+    },
+    methods: {
+        // этот метод запускается при нажатии клавиши 'delete'
+        clear: function () {
+            // Установить голоса всех кандидатов в 0 с помощью функции map().
+            this.candidates = this.candidates.map(function (candidate) {
+                candidate.votes = 0;
+                return candidate;
+            })
+        }
+    }
+})
+</script>
+<script type="text/javascript">
+
+var str = 'fgfggg'
+str[1]='a'
+console.log(str);
+</script>
+</html>
